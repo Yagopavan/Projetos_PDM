@@ -18,18 +18,8 @@ class MyApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: const Center(
-            child: Text(
-              "BMW M3",
-              style: TextStyle(
-                fontSize: 30,
-                color: Color.fromARGB(255, 170, 232, 189),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

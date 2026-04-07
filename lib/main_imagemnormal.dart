@@ -9,20 +9,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text("Texto Imagem")),
+        appBar: AppBar(
+          title: const Text("Texto Imagem"),
+        ),
         body: Center(
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Bem Vindo", style: TextStyle(fontSize: 24)),
-              const SizedBox(width: 20),
-              Image.asset('assets/images/bmw_m3.jpg', width: 200),
+              const SizedBox(height: 20),
+              Image.asset(
+                'assets/images/bmw_m3.jpg',
+                width: 200,
+              )
             ],
           ),
+          ),
         ),
-      ),
-    );
+      );
   }
 }

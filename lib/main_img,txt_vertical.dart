@@ -13,11 +13,16 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text("Texto Imagem")),
         body: Center(
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Bem Vindo", style: TextStyle(fontSize: 24)),
-              const SizedBox(width: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Bem Vindo", style: TextStyle(fontSize: 24)),
+                ],
+              ),
+              const SizedBox(height: 20),
               Image.asset('assets/images/bmw_m3.jpg', width: 200),
             ],
           ),
