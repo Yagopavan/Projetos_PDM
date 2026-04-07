@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
           child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.home, size:40),
+            Icon(Icons.contactless, size:40),
             SizedBox(width: 20),
             Icon(Icons.favorite, size:40),
             SizedBox(width: 20),

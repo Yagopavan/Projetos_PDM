@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Carteira Digital')),
+        appBar: AppBar(title: Text('Atividade 1 - Container, Row e Column')),
 
         body: Center(
           child: Column(
@@ -18,14 +18,8 @@ class MyApp extends StatelessWidget {
               Container(
                 width: 350,
                 height: 200,
-                decoration: BoxDecoration(
-                  color: Colors.deepPurple,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Center(
-                 child: Icon(icons.contctless, size: 50, color: Colors.white),
-
-                ),
+                color: Colors.deepPurple,
+                child: Center()
               )
             ],
           ),
