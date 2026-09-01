@@ -29,6 +29,10 @@ class _LocalizacaoPageState extends State<LocalizacaoPage> {
   double latitude = 0;
   double longitude = 0;
 
+  double latitudeCasa = -21.474599; // Coordenada da casa
+  double longitudeCasa = -46.748815; // Coordenada da casa
+  double distancia = 0;
+
   Future<void> buscarLocalizacao() async {
     bool servicoAtivo = await Geolocator.isLocationServiceEnabled();
 
@@ -36,28 +40,34 @@ class _LocalizacaoPageState extends State<LocalizacaoPage> {
       await Geolocator.openLocationSettings();
       return;
     }
-    
+
     LocationPermission permissao = await Geolocator.checkPermission();
 
     if (permissao == LocationPermission.denied) {
       permissao = await Geolocator.requestPermission();
 
       if (permissao == LocationPermission.denied ||
-      permissao == LocationPermission.deniedForever) {
+          permissao == LocationPermission.deniedForever) {
         return;
       }
     }
-    
+
     Position posicao = await Geolocator.getCurrentPosition();
-    
+
     setState(() {
       latitude = posicao.latitude;
       longitude = posicao.longitude;
+
+      distancia = Geolocator.distanceBetween(
+        latitude,
+        longitude,
+        latitudeCasa,
+        longitudeCasa,
+      );
     });
 
     print('Latitude: $latitude');
     print('Longitude: $longitude');
-
   }
 
   @override
@@ -73,35 +83,39 @@ class _LocalizacaoPageState extends State<LocalizacaoPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             const Icon(Icons.location_on, size: 60, color: Colors.blue),
+              const Icon(Icons.location_on, size: 60, color: Colors.blue),
 
-             const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-             const Text(
-              'Localização atual',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-             ),
-
-             const SizedBox(height: 30),
-
-             Text('Latitude: $latitude',
-              style: const TextStyle(fontSize: 18)),
-
-             const SizedBox(height: 20),
-
-              Text('Longitude: $longitude',
-               style: const TextStyle(fontSize: 18)
+              const Text(
+                'Localização atual',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
 
               const SizedBox(height: 30),
 
-             const SizedBox(height: 30),
+              Text('Latitude: $latitude', style: const TextStyle(fontSize: 18)),
 
-             ElevatedButton(
-              onPressed: buscarLocalizacao,
-              child: const Text('Buscar Localização')
-             ),
-              
+              const SizedBox(height: 20),
+
+              Text(
+                'Longitude: $longitude',
+                style: const TextStyle(fontSize: 18),
+              ),
+
+              Text(
+                'Distância até casa: ${distancia.toStringAsFixed(0)} metros',
+               style: const TextStyle(fontSize: 18),
+              ),
+
+              const SizedBox(height: 30),
+
+              const SizedBox(height: 30),
+
+              ElevatedButton(
+                onPressed: buscarLocalizacao,
+                child: const Text('Buscar Localização'),
+              ),
             ], // Fim do Column
           ),
         ),
