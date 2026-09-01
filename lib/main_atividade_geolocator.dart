@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+void main() {
+  runApp(const MeuApp());
+}
+
+class MeuApp extends StatelessWidget {
+  const MeuApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Minha Localização',
+      home: const LocalizacaoPage(),
+    );
+  }
+}
+
+class LocalizacaoPage extends StatefulWidget {
+  const LocalizacaoPage({super.key});
+
+  @override
+  State<LocalizacaoPage> createState() => _LocalizacaoPageState();
+}
+
+class _LocalizacaoPageState extends State<LocalizacaoPage> {
+  double latitude = 0;
+  double longitude = 0;
+
+  double latitudeCasa = -21.474599; // Coordenada da casa
+  double longitudeCasa = -46.748815; // Coordenada da casa
+  double distancia = 0;
+
+  Future<void> buscarLocalizacao() async {
+    bool servicoAtivo = await Geolocator.isLocationServiceEnabled();
+
+    if (!servicoAtivo) {
+      await Geolocator.openLocationSettings();
+      return;
+    }
+
+    LocationPermission permissao = await Geolocator.checkPermission();
+
+    if (permissao == LocationPermission.denied) {
+      permissao = await Geolocator.requestPermission();
+
+      if (permissao == LocationPermission.denied ||
+          permissao == LocationPermission.deniedForever) {
+        return;
+      }
+    }
+
+    Position posicao = await Geolocator.getCurrentPosition();
+
+    setState(() {
+      latitude = posicao.latitude;
+      longitude = posicao.longitude;
+
+      distancia = Geolocator.distanceBetween(
+        latitude,
+        longitude,
+        latitudeCasa,
+        longitudeCasa,
+      );
+    });
+
+    print('Latitude: $latitude');
+    print('Longitude: $longitude');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Minha Localização')),
+
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsetsGeometry.all(20),
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(Icons.location_on, size: 60, color: Colors.blue),
+
+              const SizedBox(height: 20),
+
+              const Text(
+                'Localização atual',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+
+              const SizedBox(height: 30),
+
+              Text('Latitude: $latitude', style: const TextStyle(fontSize: 18)),
+
+              const SizedBox(height: 20),
+
+              Text(
+                'Longitude: $longitude',
+                style: const TextStyle(fontSize: 18),
+              ),
+
+              Text(
+                'Distância até casa: ${distancia.toStringAsFixed(0)} metros',
+               style: const TextStyle(fontSize: 18),
+              ),
+
+              const SizedBox(height: 30),
+
+              const SizedBox(height: 30),
+
+              ElevatedButton(
+                onPressed: buscarLocalizacao,
+                child: const Text('Buscar Localização'),
+              ),
+            ], // Fim do Column
+          ),
+        ),
+      ),
+    );
+  }
+}
